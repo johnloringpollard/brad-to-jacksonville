@@ -14,6 +14,14 @@ function validateCampaign(data) {
     || !Array.isArray(data.contributions)) {
     throw new Error('Invalid campaign details');
   }
+  let listedCents = 0;
+  for (const contribution of data.contributions) {
+    if (!contribution || typeof contribution.name !== 'string' || !contribution.name.trim()
+      || !Number.isSafeInteger(contribution.amountCents) || contribution.amountCents <= 0
+      || !['offline', 'stripe'].includes(contribution.method)) throw new Error('Invalid contribution');
+    listedCents += contribution.amountCents;
+    if (!Number.isSafeInteger(listedCents) || listedCents > data.collectedCents) throw new Error('Invalid contribution total');
+  }
   if (data.paymentUrl !== null) {
     if (typeof data.paymentUrl !== 'string') throw new Error('Invalid payment link');
     const url = new URL(data.paymentUrl);
@@ -41,6 +49,18 @@ function renderCampaign(data) {
   element('fund-message').textContent = data.collectedCents === 0
     ? 'The fund is just getting started. No contributions have been confirmed yet.'
     : 'Every confirmed contribution helps move the trip forward.';
+  const contributions = element('contributions');
+  contributions.replaceChildren();
+  for (const contribution of data.contributions) {
+    const item = document.createElement('li');
+    const summary = document.createElement('strong');
+    const note = document.createElement('span');
+    summary.textContent = `${contribution.name} · ${money(contribution.amountCents)}`;
+    note.textContent = contribution.method === 'offline' ? 'Received outside Stripe · confirmed by organizer' : 'Received through Stripe';
+    item.append(summary, note);
+    contributions.append(item);
+  }
+  contributions.hidden = data.contributions.length === 0;
   if (data.updatedAt !== null) {
     element('updated-at').textContent = `Last updated ${new Intl.DateTimeFormat('en-US', {
       month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC',

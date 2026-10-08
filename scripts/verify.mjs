@@ -68,10 +68,20 @@ try {
   assert.equal(await page.locator('#payment-unavailable').isVisible(), false);
   assert.equal(await page.locator('#payment-link').getAttribute('rel'), 'noopener noreferrer');
   assert.ok(Math.abs(Number(await page.locator('#progress').getAttribute('aria-valuenow')) - 2.575) < 0.001);
+  await campaign({ ...base, collectedCents: 10000, contributions: [{ name: 'John Pollard', amountCents: 10000, method: 'offline' }] });
+  assert.equal(await page.locator('#collected').innerText(), '$100');
+  assert.equal(await page.locator('#contributions').isVisible(), true);
+  assert.match(await page.locator('#contributions').innerText(), /John Pollard · \$100/);
+  assert.match(await page.locator('#contributions').innerText(), /Received outside Stripe · confirmed by organizer/);
+  await campaign({ ...base, collectedCents: 10000, contributions: [{ name: '<img src=x onerror=alert(1)>', amountCents: 10000, method: 'offline' }] });
+  assert.equal(await page.locator('#contributions img').count(), 0);
   await campaign({ ...base, collectedCents: 150000 });
   assert.equal(await page.locator('#collected').innerText(), '$1,500');
   assert.equal(await page.locator('#progress-fill').evaluate(el => el.style.width), '100%');
   for (const invalid of [
+    { ...base, contributions: [{ name: 'John', amountCents: 10000, method: 'offline' }] },
+    { ...base, contributions: [{ name: 'John', amountCents: -1, method: 'offline' }] },
+    { ...base, contributions: [{ name: 'John', amountCents: 100, method: 'pledge' }] },
     { ...base, collectedCents: -1 },
     { ...base, collectedCents: '10000' },
     { ...base, goalCents: 0 },

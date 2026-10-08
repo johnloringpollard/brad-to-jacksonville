@@ -6,7 +6,7 @@ Website: https://johnloringpollard.github.io/brad-to-jacksonville/
 
 ## Enable contributions
 
-The initial page has **$0 collected**, no invented contributions, no confirmed funding goal, and no payment destination. Its payment button stays disabled until configured.
+A live Stripe Payment Link is configured in `campaign.json`. The funding goal is still being finalized. The payment button stays disabled if the link is removed or the configuration is invalid.
 
 1. Create a hosted payment link in your own payment-provider account. Stripe supports a **Customers choose what to pay** link: https://support.stripe.com/questions/how-to-accept-donations-through-stripe . Describe the purpose accurately as a personal trip contribution.
 2. Set `paymentUrl` in `campaign.json` to the live HTTPS payment URL. Do not put secret keys in this repository.
@@ -21,7 +21,7 @@ Payment processing happens on the provider's hosted checkout. This site does not
 
 The meter is **manually maintained**, not a live Stripe balance. It does not change when someone presses the payment button. Public copy explains this. Automatic updates would require a trusted backend and verified payment webhooks; GitHub Pages cannot run that backend.
 
-No donor names or personal payment information are collected or published here. The reserved `contributions` array starts empty and is not rendered.
+The organizer records confirmed contributions in the `contributions` array using `name`, `amountCents`, and `method` (`offline` or `stripe`). Only publish names with permission. Listed amounts cannot exceed the collected total. Outside-Stripe contributions are labeled as confirmed by the organizer; no Stripe verification is implied. The opening $100 from John Pollard was reported by the organizer as received outside Stripe.
 
 ## Local development
 

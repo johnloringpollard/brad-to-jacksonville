@@ -654,3 +654,25 @@ footer p {
     scroll-behavior:auto;
   }
 }
+
+.contributions {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+}
+.contributions li {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.contributions strong {
+  display: block;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.contributions span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}

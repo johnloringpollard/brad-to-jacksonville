@@ -1,7 +1,13 @@
 {
   "goalCents": null,
-  "collectedCents": 0,
-  "paymentUrl": null,
-  "updatedAt": null,
-  "contributions": []
+  "collectedCents": 10000,
+  "paymentUrl": "https://buy.stripe.com/7sYcN79lt0RD4NraTG6EU01",
+  "updatedAt": "2026-10-08T13:44:06Z",
+  "contributions": [
+    {
+      "name": "John Pollard",
+      "amountCents": 10000,
+      "method": "offline"
+    }
+  ]
 }
