@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://johnloringpollard.github.io/brad-to-jacksonville/sitemap.xml
